@@ -142,7 +142,8 @@ For more concrete explanation on Superkeys and Minimal Keys: [Gemini Chat Log](h
   - \( R \times S \)  
   - Returns all possible combinations of tuples from relation \( R \) and relation \( S \).
   - Cartesian product operation denoted by X allows us to combine tables
-  - TODO, need ot go back to slides to finish because TA skipped
+  - Maps every item in Set A to every item in Set B
+    - In relational databases, the Cartesian product combines every row of one table with every row of another table, creating all possible combinations, often known as a cross join in SQL. Its primary use in both database systems and relational algebra is to form the basis for other, more practical operations, such as the Theta join, by providing a universal relation that can then be filtered with a selection or other conditions to find specific, relevant relationships between data
 
 - **Rename (ρ)**  
   - \( \rho_{S(A_1, A_2, \dots, A_n)}(R) \)  
