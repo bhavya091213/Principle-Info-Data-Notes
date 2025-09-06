@@ -66,12 +66,33 @@ Example:
 
 For more concrete explanation on Superkeys and Minimal Keys: [Gemini Chat Log](https://share.google/aimode/GZD6r4ZidjIQJ5EsA)
 
+#### More in depth:
+- Stability of a key describes it's unlikelly ness to change and that it liekly wont be changed in the future
+- Characteristic of a unique identifier
+- Primary keys can be set this way to make sure duplicate keys arent inserted and the stability of it remains
+  - No Null is allowed for a primary key
+- Candidate keys are just keys that when we are deciding what primary keys are, they are candidates.
+  - They have the possibility to be primary keys and we can use any one of the primary keys as candidate keys
+  - Primary keys should be minimal
+- In regards to super keys, they can be a set of a bunch of attributes
+  - Redundant superkeys should not be used in creating a primary key
+- If we already have one primary key and have another key that also is a candidate key and we want the db to enforce uniqueness:
+  - Label it as an alternate key
+  - Alternate keys are enforced, no new entries can have duplicate attributes as the primary key
+- Foreign Key constraints
+  - Example: Two tables, the primary key in one table is the foriegn key of the other. If the other table, table B, has a new entry with a foreign key not present in table A, thats no good
+  - we can apply constraints called foreign key constraints such that this doesn't happen
+- Surrrogate and Natural Keys:
+  - Surrogate keys are keys that only have real world meaning within the context of our db
+    - It servers as a stand in for other keys
+    - Used for simplifying joins and making them faster
+  - Natural keys are the real world keys themselves
+    - Problems occur when there is no obvious natural key that we can use
+    - Soemtimes the natural keys are sensitive data
+  - We could possibly change how the surrogate keys are generated and theoretically everything would still work the same
 
 
-### Relational Algebra
-- A query language consisting of a set of operations that take one or two relations as an input and produce a new relation as their result
-  - Unary operations take one relation as input
-  - Binary operations take two relations as input
+
 
 
 #### Basic Relational Algebra Operators
