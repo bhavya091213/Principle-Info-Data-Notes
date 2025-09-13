@@ -1,0 +1,82 @@
+Lecture4.md
+# Lecture 4 - SQL
+- Ordering the display of Tuples
+  - List in alphabetic order the names of all instructors
+  - Need to use `order by attribute` in order to order in a way you want
+  - Order of insertion is the default method
+  - We may specify `desc` for descending order or `asc` for ascending order
+  - Ascending order is the default
+  - Example:
+    - order by name desc
+- It's also possible to sort on multiple attributes.
+
+- Some syntax
+  - `F <comp> some r in Backwards E t in r such that F <comp> t`
+    - `F` represents a value.
+    - `<comp>` represents a comparison operator.
+    - `some r in Backwards E t in r` is a quantifier clause that checks if the condition holds for at least one element (`t`) within a collection or range (`r`).
+    - `Backwards E` is likely an archaic or custom notation for "exists" or "for some".
+    - `t` represents an element within the collection `r`.
+    - `such that` introduces a condition.
+  - Where `<comp>` can be `<`, `<=`, `>`, `=`, `!=`
+  - `5 < some [0,5,6] = true`
+    - This means that there exists at least one element (`t`) in the list `[0,5,6]` such that `5 < t` is true. In this case, `t=6` satisfies the condition.
+  - `5 < some [0,5] = false`
+    - This means that there is no element (`t`) in the list `[0,5]` such that `5 < t` is true.
+  - `5 - some [0,5] = true`
+    - This appears to be a custom operation or notation. If `some` is interpreted as a check for membership or a condition, and `-` as a negation or difference:
+      - One interpretation could be `5` is not equal to any element in `[0,5]` which is false.
+      - Another interpretation, considering the previous examples, might involve a condition check. If the condition is `x - t` where `x=5` and `t` is an element of `[0,5]`, and the result of that subtraction is being checked against some implicit condition (e.g., non-zero).
+      - A more plausible interpretation, given the surrounding context of comparison operators and "some", is that `5` does not satisfy a condition related to the elements in `[0,5]`. If the condition were, for instance, `t = 5`, then `5` would satisfy it. If the condition is `t < 5` or `t > 5`, it might lead to this result.
+      - Without further context on the `-` operator in this specific syntax, a definitive interpretation is difficult. However, if we consider it as a logical operation related to the "some" quantifier, it might be evaluating `not (5 - t)` for some `t` in `[0,5]`.
+      - Another possibility is a typo and it intended to be `5 != some [0,5]`, which would be `false` since `5` is in `[0,5]`.
+      - Given `5 < some [0,5] = false`, it's likely this expression is also evaluating a condition for "some" element. If we assume the intended comparison for `5 - some [0,5]` relates to a property of the difference:
+        - Let's consider the potential difference `5 - t` for `t` in `[0,5]`:
+          - `5 - 0 = 5`
+          - `5 - 5 = 0`
+        - If "true" implies a non-zero difference, then `5 - some [0,5]` could be true because `5 - 0 = 5` (which is non-zero).
+        - If the operation is `some [0,5]` applied to `5` in some way, and `-` signifies a relationship.
+        - A possible interpretation is `not (5 is equal to some element in [0,5])` which would be false.
+        - A more likely scenario, given the context of comparison and "some", is that there's an implied operation or a custom comparison. If we interpret "true" as indicating that the operation involving `5` and at least one element of `[0,5]` results in a non-trivial outcome.
+        - Consider the possibility that the syntax implies checking if `5` has a particular relationship with *any* element in the list, and the outcome is evaluated. If the intended operation was `5 - t` and the condition for "true" is that this difference is not zero, then `5 - 0 = 5` (true) and `5 - 5 = 0` (false). The "some" clause would mean if *any* `t` yields a true result, the whole expression is true. Thus, `5 - 0` makes it true.
+  - `%1= sme [0,5] = true` since `0 != 5`
+    - `%1` likely refers to the first element of a collection.
+    - `sme` is a typo for `some`.
+    - This statement means that the first element (`%1`) is not equal to *any* element in the list `[0,5]`.
+    - The explanation "since `0 != 5`" seems incomplete or potentially misleading in isolation.
+    - A more accurate interpretation, connecting to the `some` clause: `x = some [0,5]` evaluates to true if `x` is present in the list `[0,5]`. Therefore, `%1 != some [0,5]` evaluates to true if `%1` is *not* present in the list `[0,5]`.
+    - If `%1` is, for example, `1`, then `1 != some [0,5]` is true because `1` is not `0` and `1` is not `5`.
+    - If `%1` is `0`, then `0 != some [0,5]` is false because `0` is in `[0,5]`.
+    - The provided explanation "since `0 != 5`" is likely referring to the distinctness of elements within the list `[0,5]`, but the core logic of the `%1= sme [0,5]` (corrected to `%1 != some [0,5]`) relies on whether `%1` matches any element.
+  - `= some` is similar to `in` but `!= some` does not mean `not in`
+    - `x = some list` is equivalent to `x in list`.
+    - `x != some list` means that `x` is not equal to *any* element in `list`. This is indeed different from `x not in list`.
+    - `x not in list` means that `x` is not an element of `list`.
+    - `x != some list` is equivalent to `all (x != element for element in list)`.
+    - For example, if `list = [1, 2, 3]` and `x = 1`:
+      - `x in list` is `true`.
+      - `x = some list` is `true`.
+      - `x not in list` is `false`.
+      - `x != some list` is `false` (because `x` is equal to at least one element in the list).
+    - If `x = 4`:
+      - `x in list` is `false`.
+      - `x = some list` is `false`.
+      - `x not in list` is `true`.
+      - `x != some list` is `true` (because `x` is not equal to `1`, `x` is not equal to `2`, and `x` is not equal to `3`).
+    - Therefore, `!= some` is precisely equivalent to `not in`. The note stating otherwise might be based on a misunderstanding or a very specific context.
+- Why should we use `some` clauses?
+  - `some` clauses are used for existential quantification, which is common in logic and programming. They allow you to express conditions that need to be true for at least one element within a collection or range, without having to explicitly list each element or use loops. This can lead to more concise and readable code, especially when dealing with large or dynamic datasets.
+  - They are useful for pattern matching, data validation, and asserting properties over a subset of data.
+- What are some examples?
+  - **Checking for a value within a range:**
+    - `is_valid = 30 < some [20, 25, 35, 40]` (This would be `true` because `30 < 35` and `30 < 40`)
+  - **Verifying if any element meets a specific criterion:**
+    - `has_negative = some [-1, 5, -3, 0] < 0` (This would be `true` because `-1 < 0` and `-3 < 0`)
+  - **In database queries (e.g., SQL):**
+    - `SELECT * FROM products WHERE price > SOME (SELECT avg_price FROM regional_avg WHERE region = 'West')` (This query would return products whose price is greater than the average price in *at least one* of the specified western regions. This is distinct from `ANY` in some SQL dialects, which is equivalent to `> SOME`.)
+  - **In programming languages (e.g., Python):**
+    - `any(x > 10 for x in numbers)` (This is the Python equivalent of `some numbers > 10`)
+    - `any(user.is_admin for user in users)` (Checks if any user in the `users` list is an administrator.)
+  - **As part of complex conditions:**
+    - `user_has_permission = (user.role == 'editor') OR (user.role == 'admin' AND 5 > some [1, 2, 6])` (The second part `5 > some [1, 2, 6]` is `false` because `5` is not greater than `6`. So the `AND` clause would be false.)
+    - `user_has_permission = (user.role == 'editor') OR (user.role == 'admin' AND 5 > some [1, 2, 3])` (The second part `5 > some [1, 2, 3]` is `true` because `5 > 1`, `5 > 2`, and `5 > 3`. Thus, the `AND` clause would be true, making `user_has_permission` true if the user is an admin.)
